@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kauan & Laura - Nosso Casamento</title>
+
+<!-- GOOGLE FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+  /* ==========================================
+     DESIGN TOKENS (VARIÁVEIS DE ESTILO E CORES)
+     ========================================== */
+  :root {
+    --font-titulo: 'Cormorant Garamond', serif;
+    --font-subtitulo: 'Playfair Display', serif;
+    --font-corpo: 'Montserrat', sans-serif;
+
+    --cor-principal: #8a6a3b;
+    --cor-principal-hover: #72552d;
+    --cor-texto: #4a3b32;
+    --cor-texto-suave: #6b5344;
+    --cor-destaque: #d4af37;
+    
+    --glass-bg: rgba(255, 254, 251, 0.78);
+    --glass-border: rgba(232, 222, 203, 0.6);
+    --glass-shadow: 0 15px 35px rgba(90, 74, 66, 0.08);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  
+  html {
+    scroll-behavior: smooth;
+    /* Ativa o Snap Scroll por tela inteira */
+    scroll-snap-type: y mandatory;
+  }
+
+  body{
+    font-family: var(--font-corpo);
+    color: var(--cor-texto);
+    text-align: center;
+    -webkit-user-select:none;
+    user-select:none;
+    overflow-x:hidden;
+    
+    /* IMAGEM DE FUNDO FIXADA ESTÁTICA */
+    background-image: url('145700.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: #fdf8f0;
+    min-height: 100vh;
+  }
+
+  img{-webkit-user-drag:none;pointer-events:none}
+
+  /* ==========================================
+     TELA DO ENVELOPE (CAPA DE ENTRADA 100VH)
+     ========================================== */
+  .envelope-tela{
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 20px;
+    background: rgba(253, 248, 240, 0.96);
+    z-index: 999;
+    transition: opacity 0.8s ease;
+    scroll-snap-align: start;
+  }
+  .envelope{
+    width: 260px; height: 170px;
+    background: #e8c99a;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 25px;
+    transition: transform 0.3s ease;
+  }
+  .envelope:hover { transform: translateY(-3px); }
+  .envelope:before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,#f3d9ab,#e8c99a);
+    clip-path:polygon(0 0,100% 0,50% 55%);
+    border-radius: 8px 8px 0 0;
+  }
+  .sello{
+    width: 50px; height: 50px;
+    background: var(--cor-destaque);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 2;
+  }
+
+  /* BOTÃO MINIMALISTA DE ABERTURA */
+  .btn-abrir {
+    background: var(--cor-principal);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-family: var(--font-corpo);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(138, 106, 59, 0.3);
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 15px;
+  }
+  .btn-abrir:hover {
+    background: var(--cor-principal-hover);
+    transform: translateY(-2px);
+  }
+
+  /* ==========================================
+     ESTRUTURA DE SEÇÕES (SNAP SCROLL 100VH)
+     ========================================== */
+  .convite{
+    display: none; /* Revelado ao abrir o envelope */
+    width: 100%;
+  }
+
+  .secao{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    scroll-snap-align: start;
+    position: relative;
+  }
+
+  /* CARTÃO COM EFEITO GLASSMORPHISM SUAVE */
+  .cartao-glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 35px 25px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: var(--glass-shadow);
+    margin: auto;
+  }
+
+  /* TIPOGRAFIA */
+  h1 {
+    font-family: var(--font-titulo);
+    font-size: 42px;
+    color: var(--cor-principal);
+    font-weight: 400;
+    margin: 8px 0;
+    line-height: 1.1;
+  }
+  h2 {
+    font-family: var(--font-subtitulo);
+    font-weight: normal;
+    font-style: italic;
+    color: var(--cor-texto-suave);
+    font-size: 19px;
+    margin-bottom: 15px;
+  }
+  p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--cor-texto);
+    margin: 8px 0;
+  }
+  .verso {
+    font-family: var(--font-titulo);
+    font-size: 18px;
+    font-style: italic;
+    color: var(--cor-texto-suave);
+    margin: 15px 0;
+  }
+
+  /* CAIXA DE DATA */
+  .data-caixa{
+    background: var(--cor-principal);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 30px;
+    display: inline-block;
+    margin: 15px 0;
+    font-size: 14px;
+    box-shadow: 0 5px 15px rgba(138,106,59,0.25);
+    letter-spacing: 0.5px;
+  }
+
+  /* FORMULÁRIO E BOTÕES */
+  input, select{
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid var(--cor-destaque);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-corpo);
+    color: var(--cor-texto);
+    font-size: 13px;
+    outline: none;
+  }
+  .btn{
+    display: block;
+    background: var(--cor-principal);
+    color: white;
+    padding: 13px;
+    border-radius: 25px;
+    text-decoration: none;
+    margin: 12px auto 0;
+    width: 100%;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .btn:hover{ background: var(--cor-principal-hover); }
+  .btn2{ background: #fff; color: var(--cor-principal); border: 2px solid var(--cor-principal); }
+  .btn2:hover{ background: #fdf8f0; }
+
+  /* SETA FLUTUANTE DE ROLAGEM */
+  .seta-rolagem {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: var(--cor-principal);
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+    40% {transform: translateX(-50%) translateY(-6px);}
+    60% {transform: translateX(-50%) translateY(-3px);}
+  }
+</style>
+</head>
+<body>
+
+<!-- ==========================================
+     TELA DO ENVELOPE (CAPA)
+     ========================================== -->
+<div class="envelope-tela" id="telaEnvelope">
+  <div class="envelope" onclick="abrirConvite()">
+    <div class="sello">💌</div>
+  </div>
+  <p style="font-family: var(--font-subtitulo); font-size: 14px; letter-spacing: 3px; color: var(--cor-principal); text-transform: uppercase;">Kauan & Laura</p>
+  <button class="btn-abrir" onclick="abrirConvite()">Abrir Convite</button>
+</div>
+
+<!-- ==========================================
+     CONTEÚDO DO CONVITE (SEÇÕES 100VH)
+     ========================================== -->
+<div class="convite" id="convite">
+  
+  <!-- SEÇÃO 1: CAPA DOS NOIVOS -->
+  <section class="secao">
+    <div class="cartao-glass">
+      <p style="letter-spacing: 3px; font-size: 11px; text-transform: uppercase; color: var(--cor-principal);">Com a bênção de Deus e dos pais</p>
+      <h1 style="margin-top: 10px;">Kauan & Laura</h1>
+      <h2>Vamos nos casar!</h2>
+      <hr style="border:0; border-top: 1px solid var(--glass-border); margin: 15px auto; width: 50px;">
+      <p class="verso">"O amor é paciente, o amor é bondoso... O amor tudo sofre, tudo crê, tudo espera, tudo suporta."<br><span style="font-size: 13px; font-style: normal;">1 Coríntios 13:4-7</span></p>
+    </div>
+    <div class="seta-rolagem">↓</div>
+  </section>
+
+  <!-- SEÇÃO 2: DATA E LOCAL -->
+  <section class="secao">
+    <div class="cartao-glass">
+      <h2 style="font-style: normal; font-weight: 600; font-size: 20px; color: var(--cor-principal);">Quando & Onde</h2>
+      <div class="data-caixa">
+        📅 00 / 00 / 2027<br>
+        ⏰ Às 16:00 horas<br>
+        📍 Santo Antônio de Jesus - BA
+      </div>
+      <p>Será uma honra imensa ter você celebrando este capítulo tão especial da nossa história ao nosso lado.</p>
+    </div>
+    <div class="seta-rolagem">↓</div>
+  </section>
+
+  <!-- SEÇÃO 3: RSVP (CONFIRMAÇÃO ONLINE) -->
+  <section class="secao">
+    <div class="cartao-glass">
+      <h2 style="font-style: normal; font-weight: 600; font-size: 20px; color: var(--cor-principal);">Confirmação de Presença</h2>
+      <p style="font-size: 13px; margin-bottom: 12px;">Por favor, confirme sua presença preenchendo os dados abaixo:</p>
+      
+      <form onsubmit="event.preventDefault(); alert('Obrigado! Sua confirmação foi enviada com sucesso.');">
+        <input type="text" placeholder="Seu Nome Completo" required>
+        <select required>
+          <option value="">Você comparecerá?</option>
+          <option value="sim">Sim, estarei presente! 🎉</option>
+          <option value="nao">Não poderei comparecer 😢</option>
+        </select>
+        <button type="submit" class="btn">ENVIAR CONFIRMAÇÃO</button>
+      </form>
+    </div>
+    <div class="seta-rolagem">↓</div>
+  </section>
+
+  <!-- SEÇÃO 4: LISTA DE PRESENTES / PIX -->
+  <section class="secao">
+    <div class="cartao-glass">
+      <h2 style="font-style: normal; font-weight: 600; font-size: 20px; color: var(--cor-principal);">Lista de Presentes</h2>
+      <p style="font-size: 13px;">A sua presença é o nosso maior presente! Mas se desejar nos abençoar com uma lembrança para a nossa nova fase, deixamos a nossa chave Pix:</p>
+      <div style="background: rgba(255,255,255,0.6); padding: 10px; border-radius: 8px; border: 1px dashed var(--cor-destaque); margin: 12px 0; font-family: monospace; font-size: 13px;">
+        Chave Pix: <b>SEU-PIX-AQUI</b>
+      </div>
+      <button class="btn btn2" onclick="navigator.clipboard.writeText('SEU-PIX-AQUI'); alert('Chave Pix copiada com sucesso!');">📋 COPIAR CHAVE PIX</button>
+    </div>
+    
+    <div style="margin-top: 25px;">
+      <p style="font-size: 12px; color: var(--cor-texto-suave);">Com todo nosso amor,</p>
+      <b style="font-family: var(--font-titulo); font-size: 20px; color: var(--cor-principal);">Kauan & Laura</b>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function abrirConvite(){
+    const tela = document.getElementById('telaEnvelope');
+    tela.style.opacity = '0';
+    setTimeout(() => {
+      tela.style.display = 'none';
+      document.getElementById('convite').style.display = 'block';
+      window.scrollTo(0, 0);
+    }, 800);
+  }
+
+  // PROTEÇÃO CONTRA CÓPIA
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('copy', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if(e.key === 'F12' || (e.ctrlKey && e.key.toLowerCase() === 'u') || (e.ctrlKey && e.key.toLowerCase() === 'c')){
+      e.preventDefault();
+      alert('Conteúdo protegido!');
+    }
+  });
+</script>
+</body>
+</html>
